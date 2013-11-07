@@ -14,3 +14,7 @@ class ConverterTestCase(TestCase):
     def test_url_have_correct_shortcode(self):
         url = Url.objects.get(id=70)
         self.assertEqual(url.short_code, num_to_base62(70))
+
+    def test_url_is_ok(self):
+        url = Url.objects.get(short_code=num_to_base62(70))
+        self.assertEqual(url.url, "http://google.com")

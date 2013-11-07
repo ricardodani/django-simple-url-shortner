@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+    <h1>Create</h1>
+</div>
+
+<div class="alert alert-success">
+    <strong>Well done! <a>http://localhost:8001/xpto</a></strong>
+</div>
+<div class="row">
+<form class="form" role="form">
+    <div class="col-md-8">
+        <input type="email" class="form-control input-lg" id="exampleInputEmail1" placeholder="Insert URL to minify Here">
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary btn-lg">Shorten URL</button>
+    </div>
+</form>
+</div>
+
+<div class="page-header">
+<h1>My URL's</h1>
+</div>
+
+<table class="table table-striped table-hover">
+<thead>
+    <tr>
+    <th>#</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Username</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+    <td>1</td>
+    <td>Mark</td>
+    <td>Otto</td>
+    <td>@mdo</td>
+    </tr>
+    <tr>
+    <td>2</td>
+    <td>Jacob</td>
+    <td>Thornton</td>
+    <td>@fat</td>
+    </tr>
+    <tr>
+    <td>3</td>
+    <td>Larry</td>
+    <td>the Bird</td>
+    <td>@twitter</td>
+    </tr>
+</tbody>
+</table>
+{% endblock %}
