@@ -1,22 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
+
+
+
 <div class="page-header">
     <h1>Create</h1>
 </div>
-
-<div class="alert alert-success">
-    <strong>Well done! <a>http://localhost:8001/xpto</a></strong>
-</div>
+<form class="form" role="form" method="POST">
 <div class="row">
-<form class="form" role="form">
-    <div class="col-md-8">
-        <input type="email" class="form-control input-lg" id="exampleInputEmail1" placeholder="Insert URL to minify Here">
+    {% if short_url %}
+        <div class="alert alert-success">
+            <strong>Well done!</strong> URL was minified successfully.
+        </div>
+    {% endif %}
+    {% if change_form.errors %}
+        <div class="alert alert-danger">
+            URL not valid.
+        </div>
+    {% endif %}
+    <div class="col-xs-12 col-md-8">
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="input-group {% if change_form.errors %}has-error{% endif%}">
+                        {% csrf_token %}
+                        <span class="input-group-addon">@</span>
+                        <input type="url" name="original_url" class="form-control input-lg" placeholder="Insert URL to minify Here" value="{{ change_form.original_url.value }}" />
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <button type="submit" class="btn btn-primary btn-lg">Shorten URL</button>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <button type="submit" class="btn btn-primary btn-lg">Shorten URL</button>
+    <div class="col-xs-6 col-md-4">
+        {% if short_url %}
+            <strong>Here's your URL:</strong>
+            <h3><a href="{{ short_url }}" about="_blank">{{ short_url }}</a></h3>
+        {% endif %}
     </div>
-</form>
 </div>
+</form>
+
 
 {% if url_list %}
     <div class="page-header">
@@ -28,14 +52,16 @@
         <th>Original Url</th>
         <th>Generated Shortened Url</th>
         <th>Date of creation</th>
+        <th>User</th>
     </tr>
     </thead>
     <tbody>
     {% for url in url_list %}
     <tr>
         <td>{{ url.original_url }}</td>
-        <td>{{ url.get_absolute_url }}</td>
+        <td><strong><a href="{{ url.get_absolute_url }}">{{ url.get_absolute_url }}</a></strong></td>
         <td>{{ url.created_at }}</td>
+        <td>{{ url.user }}</td>
     </tr>
     {% endfor %}
     </tbody>
