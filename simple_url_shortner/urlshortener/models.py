@@ -3,6 +3,7 @@
 import sys
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from .converter import num_to_base62
 
 
@@ -21,6 +22,9 @@ class Url(models.Model):
     def save(self, *args, **kwargs):
         super(Url, self).save(*args, **kwargs)
         Url.objects.filter(id=self.id).update(short_code=num_to_base62(self.id))
+    
+    def get_absoulte_url(self):
+        return reverse('short_url', args=[self.short_code])
 
     class Meta:
         ordering = ['-created_at']
