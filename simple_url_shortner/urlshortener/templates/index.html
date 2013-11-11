@@ -22,9 +22,9 @@
         <div class="row">
             <div class="col-xs-8">
                 <div class="input-group {% if change_form.errors %}has-error{% endif%}">
-                        {% csrf_token %}
-                        <span class="input-group-addon">@</span>
-                        <input type="url" name="original_url" class="form-control input-lg" placeholder="Insert URL to minify Here" value="{{ change_form.original_url.value }}" />
+                    {% csrf_token %}
+                    <span class="input-group-addon">@</span>
+                    <input type="url" name="original_url" class="form-control input-lg" placeholder="Insert URL to minify Here" value="{{ change_form.original_url.value|default_if_none:'' }}" />
                 </div>
             </div>
             <div class="col-xs-2">
