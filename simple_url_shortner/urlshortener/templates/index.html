@@ -49,7 +49,6 @@
         <th>Original Url</th>
         <th>Generated Shortened Url</th>
         <th>Date of creation</th>
-        <th>User</th>
     </tr>
     </thead>
     <tbody>
@@ -58,11 +57,23 @@
         <td>{{ url.original_url }}</td>
         <td><strong><a href="{{ url.get_absolute_url }}">{{ url.get_absolute_url }}</a></strong></td>
         <td>{{ url.created_at }}</td>
-        <td>{{ url.user }}</td>
     </tr>
     {% endfor %}
     </tbody>
     </table>
+
+
+<ul class="pager">
+    {% if url_list.has_previous %}
+        <li class="previous"><a href="?page={{ url_list.previous_page_number }}">&larr; previous</a></li>
+    {% endif %}
+    <li>Page {{ url_list.number }} of {{ url_list.paginator.num_pages }}.</li>
+    {% if url_list.has_next %}
+    <li class="next"><a href="?page={{ url_list.next_page_number }}">next &rarr;</a></li>
+    {% endif %}
+</ul>
+
+
 {% endif %}
 
 {% endblock %}

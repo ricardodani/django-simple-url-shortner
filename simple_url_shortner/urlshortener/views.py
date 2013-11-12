@@ -6,6 +6,7 @@ from django.views.decorators.http import require_GET
 from django.contrib.auth import login, authenticate
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 
 from .forms import UrlCreateForm
@@ -41,14 +42,31 @@ def register_user(request):
     return render(request, 'register.html', context)
 
 
+def user_url_list(user, page):
+    """
+    Returns a paginator of a list of users Url's.
+    """
+
+    url_list = Url.objects.filter(user=user)
+    paginator = Paginator(url_list, 20)
+    try:
+        url_list = paginator.page(page)
+    except PageNotAnInteger:
+        url_list = paginator.page(1)
+    except EmptyPage:
+        url_list = paginator.page(paginator.num_pages)
+    return url_list
+
+
 def index(request):
     """
     Main View, show form and list Url`s of the authenticated user.
     """
+
     if request.user.is_authenticated():
         context = {
             # Returns the users ``Url.objects`` QuerySet or None if Anonymous.
-            'url_list': Url.objects.filter(user=request.user),
+            'url_list': user_url_list(request.user, request.GET.get('page')),
             'user': request.user
         }
     else:
