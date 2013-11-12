@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+    <link href="{% static "css/formpage.css" %}" rel="stylesheet">
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <form class="user-form" action="{% url 'register'%}" method="POST">
+        <h2 class="user-form-heading">Register</h2>
+        {% include "meta/bootstraped_form.html" with form=user_register_form %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      </form>
+{% endblock %}

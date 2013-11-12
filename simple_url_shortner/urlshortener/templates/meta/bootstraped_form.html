@@ -1,11 +1,21 @@
+{% if form.errors %}
+    <div class="alert alert-danger">
+    Form validation error.
+    </div>
+{% endif %}
 {% for field in form %}
+{% csrf_token %} 
 <p class="form-group {% if field.errors %}has-error{% endif %}">
-    <label target="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if not no_labels %}
+        <label target="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% endif %}
     <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control" max_length="{{ field.field..max_lenght }}" {% if field.field.widget.is_required %}required=""{% endif %} placeholder="{{ field.label }}" id="{{ field.id_for_label }}" />
     {% for error in field.errors %}
         <span class="help-block">{{ error }}</span>
     {% empty %}
+        {% if field.help_text %}
         <span class="help-block">{{ field.help_text }}</span>
+        {% endif %}
     {% endfor %}
 </p>
 {% endfor %}
