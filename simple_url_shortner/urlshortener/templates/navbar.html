@@ -48,14 +48,18 @@
         <h4 class="modal-title">Register</h4>
       </div>
       <div class="modal-body">
-      <form class="form-signin">
-            {% comment %}
-          <p><label target="username">Username</label><input type="text" name="username" autofocus="" required="" placeholder="Username" class="form-control"></p>
-        <p><label target="password">Password</label><input type="password" name="password" required="" placeholder="Password" class="form-control"></p>
-        <p><input type="password" name="repeat_password" required="" placeholder="Confirm Password" class="form-control"></p>
-            {% endcomment %}
-
-            {{ user_register_form }}
+          <form class="form-signin" action="{% url 'register' %}">
+              {% for field in user_register_form %}
+                <p class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label target="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control" max_length="{{ field.field..max_lenght }}" {% if field.field.widget.is_required %}required=""{% endif %} placeholder="{{ field.label }}" id="{{ field.id_for_label }}" />
+                    {% for error in field.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% empty %}
+                        <span class="help-block">{{ field.help_text }}</span>
+                    {% endfor %}
+                </p>
+              {% endfor %}
       </form>
       </div>
       <div class="modal-footer">

@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponsePermanentRedirect, Http404
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 
 from .forms import UrlCreateForm, UserRegisterForm, UserLoginForm
 from .models import Url
@@ -19,6 +19,11 @@ def redirect(request, short_code):
         except Url.DoesNotExist:
             raise Http404()
     return HttpResponsePermanentRedirect(url.original_url)
+
+@require_POST
+def register_user(request):
+    return render(request, 'register.html')
+
 
 def index(request):
     """
