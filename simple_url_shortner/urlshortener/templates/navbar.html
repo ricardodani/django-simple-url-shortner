@@ -43,29 +43,19 @@
 <div class="modal fade" id="modal-register">
   <div class="modal-dialog">
     <div class="modal-content">
+    <form class="form-signin" action="{% url 'register' %}">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Register</h4>
       </div>
       <div class="modal-body">
-          <form class="form-signin" action="{% url 'register' %}">
-              {% for field in user_register_form %}
-                <p class="form-group {% if field.errors %}has-error{% endif %}">
-                    <label target="{{ field.id_for_label }}">{{ field.label }}</label>
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control" max_length="{{ field.field..max_lenght }}" {% if field.field.widget.is_required %}required=""{% endif %} placeholder="{{ field.label }}" id="{{ field.id_for_label }}" />
-                    {% for error in field.errors %}
-                        <span class="help-block">{{ error }}</span>
-                    {% empty %}
-                        <span class="help-block">{{ field.help_text }}</span>
-                    {% endfor %}
-                </p>
-              {% endfor %}
-      </form>
+            {% include "meta/bootstraped_form.html" with form=user_register_form %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-lg btn-primary">Register</button>
+        <button type="submit" class="btn btn-lg btn-primary">Register</button>
       </div>
+      </form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

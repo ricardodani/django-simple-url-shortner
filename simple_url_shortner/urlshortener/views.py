@@ -3,6 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponsePermanentRedirect, Http404
 from django.views.decorators.http import require_GET, require_POST
+from django.contrib.auth import login
 
 from .forms import UrlCreateForm, UserRegisterForm, UserLoginForm
 from .models import Url
@@ -22,6 +23,13 @@ def redirect(request, short_code):
 
 @require_POST
 def register_user(request):
+    form = UserRegisterForm(request.POST)
+    if form.is_valid():
+        user = form.save()
+        login(request, user)
+        return HttpResponseRedirect(reverse_lazy('index'))
+    else:
+        context = {'user_register_form': form}
     return render(request, 'register.html')
 
 
