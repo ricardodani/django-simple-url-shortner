@@ -42,13 +42,13 @@ def register_user(request):
     return render(request, 'register.html', context)
 
 
-def user_url_list(user, page):
+def user_url_list(user, page, limit=20):
     """
     Returns a paginator of a list of users Url's.
     """
 
     url_list = Url.objects.filter(user=user)
-    paginator = Paginator(url_list, 20)
+    paginator = Paginator(url_list, limit)
     try:
         url_list = paginator.page(page)
     except PageNotAnInteger:
