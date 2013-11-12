@@ -55,7 +55,7 @@
     {% for url in url_list %}
     <tr>
         <td>{{ url.original_url }}</td>
-        <td><strong><a href="{{ url.get_absolute_url }}">{{ url.get_absolute_url }}</a></strong></td>
+        <td><strong><a href="{{ absolute_uri }}{{ url.short_code }}">{{ absolute_uri }}{{ url.short_code }}</a></strong></td>
         <td>{{ url.created_at }}</td>
     </tr>
     {% endfor %}

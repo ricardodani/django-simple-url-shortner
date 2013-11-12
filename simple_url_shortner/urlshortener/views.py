@@ -67,6 +67,7 @@ def index(request):
         context = {
             # Returns the users ``Url.objects`` QuerySet or None if Anonymous.
             'url_list': user_url_list(request.user, request.GET.get('page')),
+            'absolute_uri': request.build_absolute_uri(),
             'user': request.user
         }
     else:
@@ -82,7 +83,7 @@ def index(request):
                 request.user if request.user.is_authenticated() else None
             )
             instance = form.save()
-            context['short_url'] = instance.get_absolute_url()
+            context['short_url'] = request.build_absolute_uri() + instance.short_code
     else:
         form = UrlCreateForm()
     context['change_form'] = form

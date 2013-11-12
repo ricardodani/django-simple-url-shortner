@@ -24,7 +24,7 @@ class Url(models.Model):
             return u'Not generated URL'
 
     def get_absolute_url(self):
-        return settings.SITE_URL + reverse('redirect', args=[self.short_code])
+        return reverse('redirect', args=[self.short_code])
 
     def save(self, *args, **kwargs):
         super(Url, self).save(*args, **kwargs)
