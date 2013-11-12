@@ -1,7 +1,9 @@
-from django.test import TestCase
-from django.conf import settings
-from converter import num_to_base62
-from models import Url
+from django.test import TestCase, client
+from django.contrib.auth.models import User
+
+from .converter import num_to_base62
+from .models import Url
+from .forms import UrlCreateForm
 
 class URLTestCase(TestCase):
 
@@ -21,12 +23,20 @@ class URLTestCase(TestCase):
         self.assertEqual(url.original_url, "http://google.com")
 
     def test_creation_with_form(self):
-        pass
+        _original_url = u'http://google.com/'
+        form = UrlCreateForm({'original_url': _original_url})
+        instance = form.save()
+        self.assertEqual(instance.original_url, _original_url)
+        self.assertTrue(isinstance(instance.id, int))
+        self.assertTrue(len(instance.short_code) > 0)
 
-    def test_creation_with_model(self):
-        pass
+class ClientTestCase(TestCase):
 
-class SettingsTestCase(TestCase):
+    def setUp(self):
+        self.credentials = {'username': 'teste', 'password': 'teste'}
+        User.objects.create(**self.credentials)
+        self.client = client.Client()
 
-    def test_if_settings_have_SITE_URL(self):
-        self.assertTrue(hasattr(settings, 'SITE_URL'))
+    def test_index_returns_status_200(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
