@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponsePermanentRedirect, Http404, HttpResponseRedirect
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET
 from django.contrib.auth import login, authenticate
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
