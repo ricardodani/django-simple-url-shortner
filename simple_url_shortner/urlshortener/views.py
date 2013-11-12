@@ -8,10 +8,12 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
 
 from .forms import UrlCreateForm
 from .models import Url
 
+@cache_page(60 * 60)
 @require_GET
 def redirect(request, short_code):
     """
