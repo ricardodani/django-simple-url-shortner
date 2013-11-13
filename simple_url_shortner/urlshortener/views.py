@@ -46,7 +46,7 @@ def register_user(request):
 
 def user_url_list(user, page, limit=20):
     """
-    Returns a paginator of a list of users Url's.
+    Returns a paginator of a queryset with users Url's.
     """
 
     url_list = Url.objects.filter(user=user)
