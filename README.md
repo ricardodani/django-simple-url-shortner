@@ -3,6 +3,11 @@ django-simple-url-shortner
 
 A simple URL Shortner project written in python/django.
 
+Screenshots
+-----------
+
+![Create](/screenshots/create.png "Create")
+
 Configure
 ---------
 
@@ -34,3 +39,4 @@ Sync database:
 Runserver:
 
     python manage.py runserver
+
