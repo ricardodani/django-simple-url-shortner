@@ -44,9 +44,28 @@ Tests:
 
 Sync database:
 
-    python manage.py syncdb
+    python manage.py makemigrations urlshortner
+    python manage.py migrate
 
 Runserver:
 
     python manage.py runserver
 
+Support on Windows with Django 1.10
+-----------------------------------
+
+Contributor: Samuel Dias
+             Ricardo Lapa Dani
+
+Configuring CACHE on settings.py using DatabaseCache instead of Memcached (not supported by Windows):
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+            'LOCATION': 'my_cache_table',
+        }
+    }
+
+Sync database:
+
+    python manage.py createcachetable
