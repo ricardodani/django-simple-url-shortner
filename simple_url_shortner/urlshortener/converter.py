@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import string
-CHARS = string.digits + string.letters
+CHARS = string.digits + string.ascii_letters
 
 def num_to_base62(n):
     '''
