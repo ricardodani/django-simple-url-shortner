@@ -10,6 +10,18 @@ class UrlViewIntegrationTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Shorten URL")
+        self.assertContains(response, "urlshortener/css/bootstrap.min.css")
+        self.assertContains(response, "urlshortener/js/bootstrap.bundle.min.js")
+        self.assertContains(response, 'data-bs-target="#modal-register"')
+        self.assertNotContains(response, "data-toggle=")
+
+    def test_login_page_uses_bootstrap_5_modal_and_button_attributes(self):
+        response = self.client.get(reverse("login"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "btn btn-lg btn-primary w-100")
+        self.assertContains(response, 'data-bs-toggle="modal"')
+        self.assertNotContains(response, "jquery")
 
     def test_anonymous_user_can_create_and_follow_a_short_url(self):
         response = self.client.post(

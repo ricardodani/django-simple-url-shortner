@@ -11,8 +11,8 @@
         <h2 class="user-form-heading">Login</h2>
         {% csrf_token %}
         {% include "meta/bootstraped_form.html" with form=form %}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        <button class="btn btn-lg btn-block btn-default" type="button" id="register">...or Register</button>
+        <button class="btn btn-lg btn-primary w-100 mb-2" type="submit">Login</button>
+        <button class="btn btn-lg btn-outline-secondary w-100" type="button" data-bs-toggle="modal" data-bs-target="#modal-register">...or Register</button>
     </form>
 {% include "register-modal.html" %}
 {% endblock %}

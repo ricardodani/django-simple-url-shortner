@@ -44,11 +44,11 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[dev]"
       - run: python -m playwright install --with-deps chromium
-      - run: python scripts/capture_screenshots.py --output-dir "$RUNNER_TEMP/screenshots"
+      - run: python scripts/capture_screenshots.py --output-dir artifacts/screenshots
       - uses: actions/upload-artifact@v4
         with:
           name: playwright-screenshots
-          path: ${{ runner.temp }}/screenshots/
+          path: artifacts/screenshots/
 
   windows:
     name: Windows compatibility

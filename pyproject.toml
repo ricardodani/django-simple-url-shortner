@@ -57,6 +57,7 @@ exclude = ["urlshortener.tests*"]
 [tool.setuptools.package-data]
 urlshortener = [
     "py.typed",
+    "licenses/*.txt",
     "templates/**/*.html",
     "static/**/*",
 ]

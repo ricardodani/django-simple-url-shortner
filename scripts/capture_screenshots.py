@@ -47,6 +47,15 @@ def _wait_for_server(
 
 
 def capture_screenshots(output_dir: Path, port: int) -> list[Path]:
+    output_dir = output_dir if output_dir.is_absolute() else ROOT / output_dir
+    output_dir = output_dir.resolve()
+    try:
+        output_dir.relative_to(ROOT)
+    except ValueError as exc:
+        raise ValueError(
+            f"Screenshot output must be inside the project directory: {ROOT}"
+        ) from exc
+
     output_dir.mkdir(parents=True, exist_ok=True)
     _ensure_port_available(port)
     base_url = f"http://127.0.0.1:{port}/"
@@ -102,13 +111,29 @@ def capture_screenshots(output_dir: Path, port: int) -> list[Path]:
                         response = page.goto(base_url, wait_until="networkidle")
                         if response is None or response.status != 200:
                             raise RuntimeError("The home page did not return HTTP 200.")
+
+                        page.locator('[data-bs-target="#modal-register"]').click()
+                        page.locator("#modal-register.show").wait_for()
+                        page.locator("#modal-register .btn-close").click()
+                        page.locator("#modal-register").wait_for(state="hidden")
+                        page.locator(".modal-backdrop").wait_for(state="detached")
+                        page.goto(base_url, wait_until="networkidle")
+
                         page.screenshot(path=str(screenshots[0]), full_page=True)
+
+                        mobile_page = browser.new_page(
+                            viewport={"width": 375, "height": 812},
+                        )
+                        mobile_page.goto(base_url, wait_until="networkidle")
+                        mobile_page.locator(".navbar-toggler").click()
+                        mobile_page.locator("#navbarContent.show").wait_for()
+                        mobile_page.close()
 
                         page.locator('input[name="original_url"]').fill(
                             "https://example.com/python"
                         )
                         page.get_by_role("button", name="Shorten URL").click()
-                        page.get_by_text("URL was minified successfully.").wait_for()
+                        page.get_by_text("URL was shortened successfully.").wait_for()
                         page.screenshot(path=str(screenshots[1]), full_page=True)
 
                         short_url = page.locator("h3 a").get_attribute("href")
@@ -149,7 +174,7 @@ def main() -> None:
         "--output-dir",
         type=Path,
         default=ROOT / "docs" / "screenshots",
-        help="Directory for generated PNG screenshots.",
+        help="Screenshot directory inside the project (default: docs/screenshots).",
     )
     parser.add_argument(
         "--port",
@@ -160,7 +185,7 @@ def main() -> None:
     arguments = parser.parse_args()
 
     for screenshot in capture_screenshots(
-        arguments.output_dir.resolve(),
+        arguments.output_dir,
         arguments.port,
     ):
         print(f"Captured {screenshot}")

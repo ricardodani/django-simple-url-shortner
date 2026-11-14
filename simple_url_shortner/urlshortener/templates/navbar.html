@@ -1,42 +1,37 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation" id="nav">
-    <div class="container">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Django Simple URL Shortner</a>
-    </div>
-    <div class="navbar-collapse collapse">
-        {% if user.is_authenticated %}
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="glyphicon glyphicon-user"></span>
-                {{ user }}<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{% url 'index' %}">My URL's</a></li>
-                    <li>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button class="btn btn-link" type="submit">Log Out</button>
-                        </form>
-                    </li>
-                </ul>
-            </li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="nav">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'index' %}">Django Simple URL Shortener</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      {% if user.is_authenticated %}
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'index' %}">My URLs</a></li>
+              <li>
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button class="dropdown-item" type="submit">Log out</button>
+                </form>
+              </li>
+            </ul>
+          </li>
         </ul>
-        {% else %}
-            <form class="navbar-form navbar-right" method="POST" action="{% url 'login' %}">
-                {% csrf_token %}
-                {% include "meta/bootstraped_form.html" with form=user_login_form no_labels=True %}
-                <button class="btn btn-success" type="submit">Sign in</button>
-                <button class="btn btn-primary" type="button" id="register">Register</button>
-            </form>
-        {% endif %}
+      {% else %}
+        <form class="navbar-login d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 ms-lg-auto" method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
+          {% include "meta/bootstraped_form.html" with form=user_login_form no_labels=True inline=True %}
+          <button class="btn btn-success" type="submit">Sign in</button>
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal-register">Register</button>
+        </form>
+      {% endif %}
     </div><!--/.nav-collapse -->
-    </div>
-</div>
+  </div>
+</nav>
 
 {% include "register-modal.html" %}
