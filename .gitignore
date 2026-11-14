@@ -37,3 +37,13 @@ nosetests.xml
 
 .DS_Store
 db.sqlite3
+.github/agents/
+.github/copilot-instructions.md
+.venv/
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+playwright-report/
+test-results/
+artifacts/
+staticfiles/

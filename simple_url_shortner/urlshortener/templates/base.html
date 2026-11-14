@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,9 +11,9 @@
     <title>Django Simple URL Shortener</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "urlshortener/css/bootstrap.css" %}" rel="stylesheet">
     <!-- Bootstrap theme -->
-    <link href="{% static "css/bootstrap-theme.min.css" %}" rel="stylesheet">
+    <link href="{% static "urlshortener/css/bootstrap-theme.min.css" %}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -45,7 +45,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/urlshortener.js" %}"></script>
+    <script src="{% static "urlshortener/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "urlshortener/js/urlshortener.js" %}"></script>
   </body>
 </html>

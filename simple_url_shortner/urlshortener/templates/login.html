@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block extra_head %}
-    <link href="{% static "css/formpage.css" %}" rel="stylesheet">
+    <link href="{% static "urlshortener/css/formpage.css" %}" rel="stylesheet">
 {% endblock %}
 {% block navbar %}
 {% endblock %}
@@ -9,6 +9,7 @@
 {% block content %}
     <form class="user-form" action="{% url 'login' %}" method="POST">
         <h2 class="user-form-heading">Login</h2>
+        {% csrf_token %}
         {% include "meta/bootstraped_form.html" with form=form %}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
         <button class="btn btn-lg btn-block btn-default" type="button" id="register">...or Register</button>

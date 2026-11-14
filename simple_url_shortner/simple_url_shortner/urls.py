@@ -1,9 +1,7 @@
-from django.conf.urls import include, url
-
 from django.contrib import admin
-admin.autodiscover()
+from django.urls import include, path
 
 urlpatterns = [
-    url(r'^', include('urlshortener.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    path("", include("urlshortener.urls")),
+    path("admin/", admin.site.urls),
 ]

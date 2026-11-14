@@ -1,17 +1,20 @@
-from django.conf.urls import url
-from django.contrib.auth.views import login, logout
-from .views import register_user, index, redirect
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import UserCreationForm
+from django.urls import path, re_path
+
+from .views import index, redirect, register_user
 
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url(r'^(?P<short_code>\w+)$', redirect, name='redirect'),
-
-    # auth views
-    url(r'^login/$', login,
-        {'template_name': 'login.html',
-         'extra_context': {'user_register_form': UserCreationForm}},
-        name='login'),
-    url(r'^logout/$', logout, {'next_page': '/'}, name='logout'),
-    url(r'^register/$', register_user, name='register'),
+    path("", index, name="index"),
+    re_path(r"^(?P<short_code>[A-Za-z0-9]+)$", redirect, name="redirect"),
+    path(
+        "login/",
+        auth_views.LoginView.as_view(
+            template_name="login.html",
+            extra_context={"user_register_form": UserCreationForm},
+        ),
+        name="login",
+    ),
+    path("logout/", auth_views.LogoutView.as_view(next_page="/"), name="logout"),
+    path("register/", register_user, name="register"),
 ]
