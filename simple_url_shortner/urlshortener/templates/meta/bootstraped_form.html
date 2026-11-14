@@ -1,21 +1,20 @@
 {% if form.errors %}
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" role="alert">
     Form validation error.
     </div>
 {% endif %}
 {% for field in form %}
-{% csrf_token %} 
-<p class="form-group {% if field.errors %}has-error{% endif %}">
+<div class="{% if inline %}flex-grow-1{% else %}mb-3{% endif %}">
     {% if not no_labels %}
-        <label target="{{ field.id_for_label }}">{{ field.label }}</label>
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
     {% endif %}
-    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control" max_length="{{ field.field..max_lenght }}" {% if field.field.widget.is_required %}required=""{% endif %} placeholder="{{ field.label }}" id="{{ field.id_for_label }}" />
+    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control{% if field.errors %} is-invalid{% endif %}" {% if field.field.max_length %}maxlength="{{ field.field.max_length }}"{% endif %} {% if field.field.widget.is_required %}required{% endif %} placeholder="{{ field.label }}" id="{{ field.id_for_label }}" value="{{ field.value|default_if_none:'' }}" {% if field.errors %}aria-invalid="true"{% endif %}>
     {% for error in field.errors %}
-        <span class="help-block">{{ error }}</span>
+        <div class="invalid-feedback d-block">{{ error }}</div>
     {% empty %}
         {% if field.help_text %}
-        <span class="help-block">{{ field.help_text }}</span>
+        <div class="form-text">{{ field.help_text }}</div>
         {% endif %}
     {% endfor %}
-</p>
+</div>
 {% endfor %}

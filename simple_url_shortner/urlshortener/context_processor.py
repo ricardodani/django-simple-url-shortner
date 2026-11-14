@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-
-'''
+"""
 Request Context processors.
-'''
+"""
 
-def site_context(request):
-    return dict()
+from django.http import HttpRequest
+
+
+def site_context(request: HttpRequest) -> dict[str, object]:
+    return {}

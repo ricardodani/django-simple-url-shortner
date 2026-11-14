@@ -2,78 +2,76 @@
 {% block content %}
 
 <div class="page-header">
-    <h1>Create</h1>
+    <h1>Create a short URL</h1>
 </div>
-<form class="form" role="form" method="POST">
-<div class="row">
+<form class="row g-3 align-items-start" method="POST">
+    {% csrf_token %}
     {% if short_url %}
-        <div class="alert alert-success">
-            <strong>Well done!</strong> URL was minified successfully.
+        <div class="col-12">
+          <div class="alert alert-success" role="alert">
+            <strong>Done!</strong> URL was shortened successfully.
+          </div>
         </div>
     {% endif %}
     {% if change_form.errors %}
-        <div class="alert alert-danger">
+        <div class="col-12">
+          <div class="alert alert-danger" role="alert">
             URL not valid.
+          </div>
         </div>
     {% endif %}
-    <div class="col-xs-12 col-md-8">
-        <div class="row">
-            <div class="col-xs-8">
-                <div class="input-group {% if change_form.errors %}has-error{% endif%}">
-                    {% csrf_token %}
-                    <span class="input-group-addon">@</span>
-                    <input type="url" name="original_url" class="form-control input-lg" placeholder="Insert URL to minify Here" value="{{ change_form.original_url.value|default_if_none:'' }}" />
-                </div>
-            </div>
-            <div class="col-xs-2">
-                <button type="submit" class="btn btn-primary btn-lg">Shorten URL</button>
-            </div>
-        </div>
+    <div class="col-12 col-lg-8">
+      <label class="visually-hidden" for="id_original_url">URL to shorten</label>
+      <div class="input-group input-group-lg">
+        <span class="input-group-text">@</span>
+        <input type="url" name="original_url" id="id_original_url" class="form-control{% if change_form.errors %} is-invalid{% endif %}" placeholder="Paste a URL to shorten" value="{{ change_form.original_url.value|default_if_none:'' }}" aria-label="URL to shorten" required>
+        <button type="submit" class="btn btn-primary">Shorten URL</button>
+      </div>
     </div>
-    <div class="col-xs-6 col-md-4">
+    <div class="col-12 col-lg-4">
         {% if short_url %}
-            <strong>Here's your URL:</strong>
-            <h3><a href="{{ short_url }}" about="_blank">{{ short_url }}</a></h3>
+          <strong>Here's your URL:</strong>
+          <h3><a href="{{ short_url }}" target="_blank" rel="noopener noreferrer">{{ short_url }}</a></h3>
         {% endif %}
     </div>
-</div>
 </form>
 
 {% if url_list %}
-    <div class="page-header">
-        <h1>My URL's</h1>
-    </div>
+  <div class="page-header mt-5">
+    <h2>My URLs</h2>
+  </div>
+  <div class="table-responsive">
     <table class="table table-striped table-hover">
-    <thead>
-    <tr>
-        <th>Original Url</th>
-        <th>Generated Shortened Url</th>
-        <th>Date of creation</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for url in url_list %}
-    <tr>
-        <td>{{ url.original_url }}</td>
-        <td><strong><a href="{{ absolute_uri }}{{ url.short_code }}">{{ absolute_uri }}{{ url.short_code }}</a></strong></td>
-        <td>{{ url.created_at }}</td>
-    </tr>
-    {% endfor %}
+      <thead>
+        <tr>
+          <th scope="col">Original URL</th>
+          <th scope="col">Shortened URL</th>
+          <th scope="col">Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for url in url_list %}
+          <tr>
+            <td>{{ url.original_url }}</td>
+            <td><strong><a href="{{ absolute_uri }}{{ url.short_code }}">{{ absolute_uri }}{{ url.short_code }}</a></strong></td>
+            <td>{{ url.created_at }}</td>
+          </tr>
+        {% endfor %}
     </tbody>
     </table>
+  </div>
 
-
-<ul class="pager">
-    {% if url_list.has_previous %}
-        <li class="previous"><a href="?page={{ url_list.previous_page_number }}">&larr; previous</a></li>
-    {% endif %}
-    <li>Page {{ url_list.number }} of {{ url_list.paginator.num_pages }}.</li>
-    {% if url_list.has_next %}
-    <li class="next"><a href="?page={{ url_list.next_page_number }}">next &rarr;</a></li>
-    {% endif %}
-</ul>
-
-
+  <nav aria-label="URL list pages">
+    <ul class="pagination">
+      {% if url_list.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ url_list.previous_page_number }}">Previous</a></li>
+      {% endif %}
+      <li class="page-item disabled"><span class="page-link">Page {{ url_list.number }} of {{ url_list.paginator.num_pages }}</span></li>
+      {% if url_list.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ url_list.next_page_number }}">Next</a></li>
+      {% endif %}
+    </ul>
+  </nav>
 {% endif %}
 
 {% endblock %}
