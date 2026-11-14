@@ -46,7 +46,12 @@ def _wait_for_server(
     )
 
 
-def capture_screenshots(output_dir: Path, port: int) -> list[Path]:
+def capture_screenshots(
+    output_dir: Path,
+    port: int,
+    *,
+    headed: bool = False,
+) -> list[Path]:
     output_dir = output_dir if output_dir.is_absolute() else ROOT / output_dir
     output_dir = output_dir.resolve()
     try:
@@ -102,7 +107,7 @@ def capture_screenshots(output_dir: Path, port: int) -> list[Path]:
                     output_dir / "shortened-url.png",
                 ]
                 with sync_playwright() as playwright:
-                    browser = playwright.chromium.launch()
+                    browser = playwright.chromium.launch(headless=not headed)
                     try:
                         page = browser.new_page(
                             viewport={"width": 1440, "height": 1000},
@@ -182,11 +187,17 @@ def main() -> None:
         default=8000,
         help="Local port for the temporary Django server.",
     )
+    parser.add_argument(
+        "--headed",
+        action="store_true",
+        help="Show the Chromium browser while the smoke test runs.",
+    )
     arguments = parser.parse_args()
 
     for screenshot in capture_screenshots(
         arguments.output_dir,
         arguments.port,
+        headed=arguments.headed,
     ):
         print(f"Captured {screenshot}")
 
